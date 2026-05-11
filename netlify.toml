@@ -1,8 +1,7 @@
 [build]
-  command = "pip install -r requirements.txt"
-  publish = "public"
+  command = "pip install -r requirements.txt && ng build --prod"
 
 [dev]
-  command = "uvicorn main:app --reload"
+  command = "uvicorn app:app --reload"
   port = 8000
   targetPort = 8000
