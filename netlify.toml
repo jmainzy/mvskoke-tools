@@ -1,5 +1,5 @@
 [build]
-  command = "pip install -r requirements.txt && cd mvskoke-demo-site && npm run build:prod"
+  command = "pip install -r requirements.txt && cd mvskoke-demo-site && npm run build --prod"
   publish = "dist/mvskoke-demo-site"
 
 [dev]
