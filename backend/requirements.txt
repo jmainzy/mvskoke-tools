@@ -22,7 +22,7 @@ mangum==0.21.0
 markdown-it-py==4.0.0
 MarkupSafe==3.0.3
 mdurl==0.1.2
-pip==26.0.1
+pip==26.1.1
 pydantic==2.13.3
 pydantic_core==2.46.3
 pydantic-extra-types==2.11.2
