@@ -7,9 +7,9 @@ This module provides classes for generating text embeddings using various pre-tr
 from abc import ABC, abstractmethod
 from typing import List
 
-import tensorflow_hub as hub
 from sentence_transformers import SentenceTransformer
 
+DEFAULT_EMBEDDINGS_MODEL = "BAAI/bge-small-en-v1.5"
 
 class BaseEmbedder(ABC):
     """Base class for Embedder."""
@@ -25,7 +25,7 @@ class Embedder(BaseEmbedder):
     pre-trained model.
     """
 
-    def __init__(self, model_name: str = "normal"):
+    def __init__(self, model_name: str = DEFAULT_EMBEDDINGS_MODEL):
         """
         Initializes the Embedder with a specified model.
 
@@ -34,23 +34,9 @@ class Embedder(BaseEmbedder):
         """
         self.sbert = True
         print("Initiliazing embeddings: ", model_name)
-        if model_name == "fast":
-            self.model = hub.load(
-                "https://tfhub.dev/google/universal-sentence-encoder/4"
-            )
-            self.sbert = False
-        elif model_name == "multilingual":
-            self.model = hub.load("universal-sentence-encoder-multilingual-large/3")
-            self.sbert = False
-        else:
-            # if model_name == "normal":
-            #    model_name = "sentence-transformers/all-MiniLM-L6-v2"
-            if model_name == "normal":
-                model_name = "BAAI/bge-small-en-v1.5"
-            elif model_name == "best":
-                model_name = "BAAI/bge-base-en-v1.5"
-
-            self.model = SentenceTransformer(model_name)
+        if model_name == "normal":
+            model_name = DEFAULT_EMBEDDINGS_MODEL
+        self.model = SentenceTransformer(model_name)
 
         print("OK.")
 

@@ -16,10 +16,8 @@ def load_corpus():
     for filename in os.listdir(data_dir):
         if filename.endswith('.txt'):
             with open(os.path.join(data_dir, filename), 'r', encoding='utf-8') as f:
-                content = f.read()
-                def is_empty(self):
-                    raise NotImplementedError
-
+                text = f.read()
+                memory.save(text, metadata=[{"filename": filename}])
 
 def search(query: str) -> list[SearchResult]:
     if memory.is_empty():
@@ -41,7 +39,6 @@ def search(query: str) -> list[SearchResult]:
 
 if __name__ == "__main__":
     test_query = "mēkusvpkv"
-    load_corpus()
     results = search(test_query)
     for result in results:
         print(f"Title: {result.title}")
