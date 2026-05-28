@@ -18,9 +18,15 @@ export class CreekFmComponent implements AfterViewInit, OnDestroy {
     @ViewChild('audioPlayer', { static: true }) audioRef!: ElementRef<HTMLAudioElement>;
 
     playlist: PlaylistItem[] = [
-        { title: 'SoundHelix Song 1', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
-        { title: 'SoundHelix Song 2', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' },
-        { title: 'SoundHelix Song 3', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' }
+        { title: 'The three brothers and the spotted horse', src: 'https://wmit-pages-prod.s3.amazonaws.com/wp-content/uploads/sites/148/2016/12/10183157/mus08010.mp3' },
+        { title: 'The hunter and his dogs', src: 'https://wmit-pages-prod.s3.amazonaws.com/wp-content/uploads/sites/148/2016/12/10182445/mus08002.mp3' },
+        { title: 'Tug of war between the tie-snakes, tar baby', src: 'https://wmit-pages-prod.s3.amazonaws.com/wp-content/uploads/sites/148/2016/12/10182754/mus08003.mp3' },
+        { title: 'The stork father', src: 'https://wmit-pages-prod.s3.amazonaws.com/wp-content/uploads/sites/148/2016/12/10182929/mus08005.mp3' },
+        { title: 'Rabbit steals fire', src: 'https://wmit-pages-prod.s3.amazonaws.com/wp-content/uploads/sites/148/2016/12/10183003/mus08006.mp3' },
+        { title: 'Turtle is beaten by three mothers', src: 'https://wmit-pages-prod.s3.amazonaws.com/wp-content/uploads/sites/148/2016/12/10183035/mus08007.mp3' },
+        { title: 'Rabbit rides Wolf', src: 'https://wmit-pages-prod.s3.amazonaws.com/wp-content/uploads/sites/148/2016/12/10183103/mus08008.mp3' },
+        { title: 'Turtle races Wolf', src: 'https://wmit-pages-prod.s3.amazonaws.com/wp-content/uploads/sites/148/2016/12/10183131/mus08009.mp3' },
+        { title: 'The young man who turned into a snake', src: 'https://wmit-pages-prod.s3.amazonaws.com/wp-content/uploads/sites/148/2016/12/10183157/mus08010.mp3' },
     ];
 
     recentlyPlayed: PlaylistItem[] = [];
@@ -29,6 +35,10 @@ export class CreekFmComponent implements AfterViewInit, OnDestroy {
 
     get currentSrc(): string {
         return this.recentlyPlayed[this.currentHistoryIndex]?.src ?? '';
+    }
+
+    get currentTrackTitle(): string {
+        return this.recentlyPlayed[this.currentHistoryIndex]?.title ?? '';
     }
 
     ngAfterViewInit(): void {
