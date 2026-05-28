@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 interface PlaylistItem {
     title: string;
@@ -9,7 +10,7 @@ interface PlaylistItem {
 @Component({
     selector: 'app-creek-fm',
     standalone: true,
-    imports: [CommonModule],
+    imports: [CommonModule, RouterLink],
     templateUrl: './creek-fm.component.html',
     styleUrl: './creek-fm.component.scss'
 })

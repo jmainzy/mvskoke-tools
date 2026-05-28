@@ -2,38 +2,25 @@
     <section class="creekfm-card">
         <a class="action-link" routerLink="/">Back to Home</a>
         <h1>CreekFM</h1>
-        <p class="eyebrow">Recently played tracks — use Next to queue the next unseen song.</p>
+        <!-- <p class="eyebrow">Recently played tracks — use Next to queue the next unseen song.</p> -->
 
         <div class="player-area">
-            <div class="big-play-wrap">
-                <button class="big-play" type="button" [attr.aria-pressed]="isPlaying" (click)="togglePlay()">
-                    <span class="big-play__icon">{{ isPlaying ? '▌▌' : '▶' }}</span>
-                </button>
+            <div class="playback-row">
+                <button class="nav-button" type="button" (click)="prev()"><span
+                        class="material-icons">skip_previous</span></button>
+
+                <div class="big-play-wrap">
+                    <button class="big-play" type="button" [attr.aria-pressed]="isPlaying" (click)="togglePlay()">
+                        <span class="big-play__icon">{{ isPlaying ? '▌▌' : '▶' }}</span>
+                    </button>
+                </div>
+
+                <button class="nav-button" type="button" (click)="next()"><span
+                        class="material-icons">skip_next</span></button>
             </div>
 
             <audio #audioPlayer controls></audio>
         </div>
 
-        <section class="playlist">
-            <div class="playlist-header">
-                <h2>Recently Played</h2>
-                <div class="playlist-controls">
-                    <button type="button" (click)="prev()">Previous</button>
-                    <button type="button" (click)="next()">Next</button>
-                </div>
-            </div>
-
-            <ng-container *ngIf="recentlyPlayed.length; else noHistory">
-                <ul>
-                    <li *ngFor="let item of recentlyPlayed; let i = index" [class.active]="i === currentHistoryIndex">
-                        <button type="button" (click)="playIndex(i)">{{ i + 1 }}. {{ item.title }}</button>
-                    </li>
-                </ul>
-            </ng-container>
-
-            <ng-template #noHistory>
-                <p class="playlist-empty">No tracks have played yet. Click "Next" or the big play button to start.</p>
-            </ng-template>
-        </section>
     </section>
 </main>
