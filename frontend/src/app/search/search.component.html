@@ -2,19 +2,27 @@
     <section class="results-shell" aria-label="Search results">
         <div class="results-actions">
             <a class="primary-action" routerLink="/">Home</a>
-            <a class="secondary-action" routerLink="/speech-recognition">Speech recognition demo</a>
         </div>
         <header class="results-hero">
             <p class="eyebrow">Search</p>
-            <h1>{{ resultHeading }}</h1>
             <form class="results-search" (ngSubmit)="onSearchSubmit()">
                 <label class="sr-only" for="results-search-input">Search</label>
                 <input id="results-search-input" type="search" [(ngModel)]="searchTerm" name="query"
                     placeholder="Search again" />
                 <button type="submit">Search</button>
             </form>
+            <div class="example-searches" aria-label="Example searches" *ngIf="!searchTerm.trim()">
+                <span class="example-searches__label">Try:</span>
+                <div class="example-searches__chips">
+                    <a class="example-searches__pill" *ngFor="let term of exampleSearchTerms" [routerLink]="['/search']"
+                        [queryParams]="{ query: term }">
+                        {{ term }}
+                    </a>
+                </div>
+            </div>
         </header>
-        <section class="results-panel" aria-label="Result list" *ngIf="!isLoading && !error">
+        <section class="results-panel" aria-label="Result list" *ngIf="searchTerm.trim() && !isLoading && !error">
+            <h2>{{ resultHeading }}</h2>
             <div class="results-meta">
                 <span>{{ results.length }} matches</span>
                 <span>Corpus preview</span>

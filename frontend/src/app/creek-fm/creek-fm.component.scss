@@ -2,17 +2,69 @@
     min-height: 100vh;
     display: grid;
     place-items: center;
+    position: relative;
     padding: 1.5rem;
     background:
         radial-gradient(circle at top right, rgba(59, 130, 246, 0.12), transparent 42%),
         linear-gradient(160deg, #f8fafc 0%, #eef2f6 100%);
 
+    .creekfm-grid {
+        display: grid;
+        margin-top: 4rem;
+        margin-bottom: 8rem;
+        grid-template-columns: 14rem minmax(0, 1fr);
+        gap: 1rem;
+        align-items: start;
+        width: min(100%, 72rem);
+    }
+
+    .channels {
+        background: rgba(255, 255, 255, 0.96);
+        border-radius: 1rem;
+        padding: 1rem;
+        box-shadow: 0 1rem 2rem rgba(15, 23, 42, 0.06);
+    }
+
+    .channels h2 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1rem;
+        color: #0f172a;
+    }
+
+    .channels ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 0.5rem;
+    }
+
+    .channels li button {
+        width: 100%;
+        text-align: left;
+        padding: 0.6rem 0.8rem;
+        border-radius: 0.75rem;
+        border: 1px solid #e2e8f0;
+        background: #fff;
+        color: #0f172a;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .channels li.active button {
+        background: linear-gradient(135deg, #2563eb 0%, #0f766e 100%);
+        color: #fff;
+        border: 0;
+    }
+
     .creekfm-card {
-        width: min(100%, 42rem);
+        width: 90%;
+        max-width: none;
         padding: 1.5rem;
         border-radius: 1.25rem;
         background: rgba(255, 255, 255, 0.96);
         box-shadow: 0 1.5rem 3.5rem rgba(15, 23, 42, 0.12);
+        min-width: 0;
     }
 
     .actions {
@@ -33,6 +85,10 @@
         color: #0f172a;
         background: #fff;
         font-weight: 600;
+        position: absolute;
+        top: 1rem;
+        left: 2rem;
+        box-shadow: 0 0.6rem 1.2rem rgba(15, 23, 42, 0.06);
     }
 
     .eyebrow {
@@ -42,6 +98,43 @@
         font-size: 0.75rem;
         font-weight: 700;
         color: #2563eb;
+    }
+
+    .title-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .shuffle-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.85rem 1rem;
+        border-radius: 999px;
+        border: 1px solid #cbd5e1;
+        background: #f8fafc;
+        color: #0f172a;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 0.12s ease, border-color 0.12s ease, background-color 0.12s ease;
+    }
+
+    .shuffle-toggle[aria-pressed="true"] {
+        background: #2563eb;
+        border-color: transparent;
+        color: #ffffff;
+        box-shadow: 0 0.8rem 1.8rem rgba(37, 99, 235, 0.18);
+    }
+
+    .shuffle-toggle:hover {
+        transform: translateY(-1px);
+    }
+
+    .shuffle-toggle .material-icons {
+        font-size: 1rem;
     }
 
     h1 {
@@ -217,16 +310,19 @@
             border: 0;
         }
 
+    }
 
-        @media (max-width: 720px) {
-            .creekfm-card {
-                width: 100%;
-                padding: 1rem;
-            }
+    @media (max-width: 920px) {
+        .creekfm-grid {
+            grid-template-columns: 1fr;
+        }
 
-            .controls {
-                flex-wrap: wrap;
-            }
+        .channels {
+            order: 2;
+        }
+
+        .creekfm-card {
+            order: 1;
         }
     }
 }

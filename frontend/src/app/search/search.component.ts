@@ -58,6 +58,8 @@ export class SearchResultsComponent implements OnInit {
         });
     }
 
+    exampleSearchTerms = ['Mekusvpkv', 'semvnole', 'church', 'sofke'];
+
     get resultHeading(): string {
         return this.searchTerm ? `Results for "${this.searchTerm}"` : 'Search Results';
     }

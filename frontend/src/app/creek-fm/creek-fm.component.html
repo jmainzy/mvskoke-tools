@@ -1,26 +1,43 @@
 <main class="creekfm-page">
-    <section class="creekfm-card">
-        <a class="action-link" routerLink="/">Back to Home</a>
-        <h1>CreekFM</h1>
-        <p class="eyebrow">{{ currentTrackTitle }}</p>
+    <a class="action-link" routerLink="/">Back to Home</a>
+    <section class="creekfm-grid">
+        <aside class="channels" aria-label="Channels">
+            <h2>Channels</h2>
+            <ul>
+                <li *ngFor="let ch of channels" [class.active]="ch === selectedChannel">
+                    <button type="button" (click)="selectChannel(ch)">{{ ch }}</button>
+                </li>
+            </ul>
+        </aside>
 
-        <div class="player-area">
-            <div class="playback-row">
-                <button class="nav-button" type="button" (click)="prev()"><span
-                        class="material-icons">skip_previous</span></button>
+        <section class="creekfm-card">
+            <div class="title-row">
+                <h1>CreekFM</h1>
+                <button class="shuffle-toggle" type="button" [attr.aria-pressed]="shuffleOn" (click)="toggleShuffle()">
+                    <span class="material-icons">shuffle</span>
+                    Shuffle
+                </button>
+            </div>
+            <p class="eyebrow">{{ currentTrackTitle }}</p>
 
-                <div class="big-play-wrap">
-                    <button class="big-play" type="button" [attr.aria-pressed]="isPlaying" (click)="togglePlay()">
-                        <span class="big-play__icon">{{ isPlaying ? '▌▌' : '▶' }}</span>
-                    </button>
+            <div class="player-area">
+                <div class="playback-row">
+                    <button class="nav-button" type="button" (click)="prev()"><span
+                            class="material-icons">skip_previous</span></button>
+
+                    <div class="big-play-wrap">
+                        <button class="big-play" type="button" [attr.aria-pressed]="isPlaying" (click)="togglePlay()">
+                            <span class="big-play__icon">{{ isPlaying ? '▌▌' : '▶' }}</span>
+                        </button>
+                    </div>
+
+                    <button class="nav-button" type="button" (click)="next()"><span
+                            class="material-icons">skip_next</span></button>
                 </div>
 
-                <button class="nav-button" type="button" (click)="next()"><span
-                        class="material-icons">skip_next</span></button>
+                <audio #audioPlayer controls></audio>
             </div>
 
-            <audio #audioPlayer controls></audio>
-        </div>
-
+        </section>
     </section>
 </main>

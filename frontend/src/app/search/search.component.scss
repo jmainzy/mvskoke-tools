@@ -55,6 +55,52 @@ h1 {
     gap: 0.75rem;
 }
 
+.example-searches {
+    margin-top: 1rem;
+    display: grid;
+    gap: 0.75rem;
+}
+
+.example-searches__label {
+    font-size: 0.85rem;
+    color: #64748b;
+    font-weight: 700;
+}
+
+.example-searches__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.example-searches__pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.65rem 0.95rem;
+    border-radius: 999px;
+    border: 1px solid #cbd5e1;
+    background: #f8fafc;
+    color: #0f172a;
+    text-decoration: none;
+    font-weight: 600;
+    transition:
+        transform 0.15s ease,
+        background-color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.example-searches__pill:hover {
+    transform: translateY(-1px);
+    border-color: #94a3b8;
+    background: #e2e8f0;
+}
+
+.example-searches__pill:focus-visible {
+    outline: 3px solid rgba(37, 99, 235, 0.32);
+    outline-offset: 4px;
+}
+
 .results-search input {
     flex: 1;
     min-width: 0;

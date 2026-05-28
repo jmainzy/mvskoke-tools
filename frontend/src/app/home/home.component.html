@@ -1,32 +1,33 @@
 <main class="page">
     <div class="page-content">
-        <section class="other-demos" aria-label="Other demo links">
-            <h2>Other Demos</h2>
-            <div class="other-demos__links">
-                <a class="other-demos__button" routerLink="/speech-recognition">Speech Recognition</a>
-                <a class="other-demos__button" href="/read-a-longs">Read-a-longs</a>
-                <a class="other-demos__button" routerLink="/creek-fm">CreekFM</a>
-            </div>
-        </section>
-        <section class="search-card" aria-label="Search the corpus">
-            <h1>Search</h1>
-            <p>Search the Mvskoke corpus</p>
-            <form class="search-form" action="/search" method="get">
-                <label class="sr-only" for="corpus-search">Search</label>
-                <input id="corpus-search" name="query" type="search" placeholder="Enter search word or phrase" />
-                <button type="submit">Search</button>
-            </form>
-            <div class="example-searches" aria-label="Example searches">
-                <span class="example-searches__label">Example searches</span>
-                <div class="example-searches__chips">
-                    <button type="button" routerLink="/search" [queryParams]="{ query: 'mēkusvpkv' }">mēkusvpkv</button>
-                    <button type="button" routerLink="/search"
-                        [queryParams]="{ query: 'semvnolvlke' }">semvnolvlke</button>
-                    <button type="button" routerLink="/search" [queryParams]="{ query: 'church' }">church</button>
-                    <button type="button" routerLink="/search" [queryParams]="{ query: 'osafke' }">osafke</button>
-                </div>
-            </div>
-        </section>
+        <div class="warning-note" role="status">
+            Please note that these are demos for projects that I am working on. There will be bugs and non-functional
+            features.
+        </div>
+        <section class="demo-cards" aria-label="Demo cards">
+            <a class="demo-card" routerLink="/search">
+                <span class="material-icons demo-card__icon">search</span>
+                <div class="demo-card__title">Search</div>
+                <p class="demo-card__description">Search the Mvskoke corpus for words and phrases.</p>
+            </a>
 
+            <a class="demo-card" routerLink="/speech-recognition">
+                <span class="material-icons demo-card__icon">mic</span>
+                <div class="demo-card__title">Speech Recognition</div>
+                <p class="demo-card__description">Record audio and transcribe Mvskoke speech.</p>
+            </a>
+
+            <a class="demo-card" href="/read-a-longs">
+                <span class="material-icons demo-card__icon">menu_book</span>
+                <div class="demo-card__title">Read-a-longs</div>
+                <p class="demo-card__description">Follow along with audio readings.</p>
+            </a>
+
+            <a class="demo-card" routerLink="/creek-fm">
+                <span class="material-icons demo-card__icon">radio</span>
+                <div class="demo-card__title">CreekFM</div>
+                <p class="demo-card__description">Tune into the CreekFM audio playlist.</p>
+            </a>
+        </section>
     </div>
 </main>
