@@ -1,12 +1,47 @@
 <main class="speech-page">
     <section class="speech-card" aria-label="Speech Recognition demo">
-        <p class="eyebrow">Demo</p>
+        <a class="action-link" routerLink="/">Back to Home</a>
+        <!-- <p class="eyebrow">Speech Recognition</p> -->
         <h1>Speech Recognition</h1>
-        <p class="description">
-            This page is ready for your speech recognition demo workflow.
-        </p>
-        <div class="actions">
-            <a class="action-link" routerLink="/">Back to Home</a>
+
+        <div class="input-row" aria-label="Audio input options">
+            <section class="drop-zone" [class.drop-zone--active]="isDraggingFile" aria-label="Audio file upload">
+                <input #audioInput class="drop-zone__input" type="file" accept="audio/*"
+                    aria-label="Choose an audio file" (change)="onFileSelected($event)" />
+                <div class="drop-zone__surface" tabindex="0" role="button"
+                    aria-label="Drop an audio file here or choose a file" (dragover)="onDragOver($event)"
+                    (dragleave)="onDragLeave($event)" (drop)="onDrop($event)" (click)="audioInput.click()"
+                    (keydown.enter)="audioInput.click()" (keydown.space)="audioInput.click()">
+                    <p class="drop-zone__text">Drag and drop an audio file here, or click to browse.</p>
+                    <p class="drop-zone__file" *ngIf="selectedFileName; else noFileSelected">{{ selectedFileName }}</p>
+                    <ng-template #noFileSelected>
+                        <p class="drop-zone__file drop-zone__file--empty">No file selected</p>
+                    </ng-template>
+                </div>
+            </section>
+
+            <div class="or-separator" aria-hidden="true">Or</div>
+
+            <button type="button" class="record-button record-button--large" [class.record-button--active]="isRecording"
+                [disabled]="isStarting" (click)="toggleRecording()">
+                {{ isRecording ? 'Stop recording' : (isStarting ? 'Starting...' : 'Record audio') }}
+            </button>
         </div>
+
+        <audio *ngIf="previewAudioUrl" class="player" [src]="previewAudioUrl" controls></audio>
+
+        <div class="actions">
+            <button type="button" class="go-button" [disabled]="isSending" (click)="sendToAsr()">
+                {{ isSending ? 'Sending...' : 'Go' }}
+            </button>
+        </div>
+
+        <section class="output-box" aria-label="Speech recognition output">
+            <div class="output-box__header">
+                <h2>Output</h2>
+                <span>Speech recognition result</span>
+            </div>
+            <textarea class="output-box__text" [value]="recognitionOutput" readonly rows="8"></textarea>
+        </section>
     </section>
 </main>

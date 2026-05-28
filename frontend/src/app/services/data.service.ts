@@ -16,6 +16,12 @@ export interface SearchResponse {
     total: number;
 }
 
+export interface AsrResponse {
+    filename: string;
+    content_type: string;
+    transcript: string;
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -37,5 +43,12 @@ export class DataService {
         return this.http.get<string[]>(`${this.apiUrl}/suggestions`, {
             params: { prefix: partial }
         });
+    }
+
+    transcribeAudio(audio: Blob, filename: string): Observable<AsrResponse> {
+        const formData = new FormData();
+        formData.append('audio_file', audio, filename);
+
+        return this.http.post<AsrResponse>(`${this.apiUrl}/asr/`, formData);
     }
 }

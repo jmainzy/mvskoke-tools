@@ -36,8 +36,87 @@ h1 {
     color: #334155;
 }
 
+.status {
+    margin: 1rem 0 0;
+    color: #475569;
+    font-weight: 500;
+}
+
+.input-row {
+    margin-top: 1.5rem;
+    display: flex;
+    align-items: stretch;
+    gap: 1rem;
+}
+
+.drop-zone {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.drop-zone__input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.drop-zone__surface {
+    border: 1.5px dashed #94a3b8;
+    border-radius: 1.25rem;
+    background: linear-gradient(180deg, rgba(248, 250, 252, 0.95), rgba(241, 245, 249, 0.95));
+    padding: 1.25rem;
+    cursor: pointer;
+    transition:
+        transform 0.15s ease,
+        border-color 0.15s ease,
+        background-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.drop-zone__surface:hover,
+.drop-zone__surface:focus-visible,
+.drop-zone--active .drop-zone__surface {
+    transform: translateY(-1px);
+    border-color: #0f172a;
+    box-shadow: 0 0.75rem 1.75rem rgba(15, 23, 42, 0.08);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(239, 246, 255, 0.96));
+    outline: none;
+}
+
+.drop-zone__title {
+    margin: 0 0 0.35rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.drop-zone__text {
+    margin: 0;
+    color: #475569;
+}
+
+.drop-zone__file {
+    margin: 0.9rem 0 0;
+    font-weight: 600;
+    color: #0f172a;
+    word-break: break-word;
+}
+
+.drop-zone__file--empty {
+    color: #94a3b8;
+}
+
 .actions {
     margin-top: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
 }
 
 .action-link {
@@ -53,6 +132,154 @@ h1 {
     font-weight: 600;
 }
 
+.record-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.7rem 1rem;
+    border-radius: 999px;
+    border: 0;
+    cursor: pointer;
+    color: #fff;
+    background: #0f172a;
+    font-weight: 700;
+    transition:
+        transform 0.15s ease,
+        background-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.record-button--large {
+    min-width: 12rem;
+    align-self: stretch;
+}
+
+.record-button:hover:not(:disabled) {
+    transform: translateY(-1px);
+    background: #111c33;
+}
+
+.record-button--active {
+    background: #b91c1c;
+}
+
+.record-button--active:hover:not(:disabled) {
+    background: #991b1b;
+}
+
+.record-button:disabled {
+    cursor: wait;
+    opacity: 0.72;
+}
+
+.go-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 8.5rem;
+    padding: 0.95rem 1.4rem;
+    border-radius: 999px;
+    border: 0;
+    cursor: pointer;
+    color: #ffffff;
+    background: linear-gradient(135deg, #2563eb 0%, #0f766e 100%);
+    font-size: 1.05rem;
+    font-weight: 800;
+    box-shadow: 0 0.9rem 2rem rgba(37, 99, 235, 0.28);
+    transition:
+        transform 0.15s ease,
+        background-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.go-button:hover:not(:disabled) {
+    transform: translateY(-1px);
+    background: linear-gradient(135deg, #1d4ed8 0%, #0f766e 100%);
+    box-shadow: 0 1rem 2.25rem rgba(37, 99, 235, 0.34);
+}
+
+.go-button:focus-visible {
+    outline: 3px solid rgba(37, 99, 235, 0.35);
+    outline-offset: 3px;
+}
+
+.go-button:disabled {
+    cursor: wait;
+    opacity: 0.72;
+}
+
 .action-link:hover {
     background: #eef2ff;
+}
+
+.player {
+    display: block;
+    width: 100%;
+    margin-top: 1.5rem;
+}
+
+.output-box {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border-radius: 1.25rem;
+    border: 1px solid #cbd5e1;
+    background: rgba(248, 250, 252, 0.96);
+}
+
+.output-box__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.output-box__header h2 {
+    margin: 0;
+    font-size: 1rem;
+    color: #0f172a;
+}
+
+.output-box__header span {
+    color: #64748b;
+    font-size: 0.875rem;
+}
+
+.output-box__text {
+    width: 95%;
+    min-height: 10rem;
+    resize: vertical;
+    padding: 0.9rem 1rem;
+    border-radius: 1rem;
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    color: #0f172a;
+    font: inherit;
+    line-height: 1.5;
+}
+
+@media (max-width: 720px) {
+    .input-row {
+        flex-direction: column;
+    }
+
+    .record-button--large {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .or-separator {
+        align-self: center;
+        padding: 0.25rem 0;
+    }
+}
+
+.or-separator {
+    display: grid;
+    place-items: center;
+    min-width: 3rem;
+    color: #64748b;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
 }
