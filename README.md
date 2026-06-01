@@ -1,16 +1,20 @@
-## Mvskoke Corpus Search
+## Mvskoke Tools
 For searching text, audio, and more.  Work in progress.
 
-### Requirements
+## Run Backend
+Install python.  
+Make & start virtual environment:  
+`python -m venv .venv`  
+`source .venv/bin/activate`  
 
-Install python and conda.  
 Install requirements, i.e.:  
-`conda install --file requirements.txt`
+`python -m pip install -r requirements.txt`  
 
-## Deploy the App
-
-Development:  
+run the backend:  
 `fastapi dev` 
+or  
+`uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}`
 
-Deployment:  
-`uvicorn app:app --host 0.0.0.0 --port ${PORT:-8000}`
+## Run Frontend
+`cd frontend/`  
+`npm start`
