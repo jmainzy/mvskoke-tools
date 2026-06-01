@@ -25,6 +25,7 @@ export interface AsrResponse {
 @Injectable({
     providedIn: 'root'
 })
+
 export class DataService {
     private http = inject(HttpClient);
     private readonly apiUrl = DEV_API;

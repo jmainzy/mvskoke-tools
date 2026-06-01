@@ -6,39 +6,49 @@ import librosa
 from auditok import split
 import ffmpeg
 import os
+import uuid
 
 # model repo
-repo_name = "jmainz/wav2vec2-mms-1b-l1107-mus-asr"
+BIG_MODEL = "./models/mms-1b"
+SMALL_MODEL = "./models/mms-300m"
+repo_name = BIG_MODEL
 
-def transcribe_speech(audio_data: bytes, filename):
-
-    # initialize
-    model, processor = load_model(repo_name)
-    temp_filename = "temp_audio.wav"
-
-    if not filename.endswith('.wav'):
-        # write and convert to wav
-        with open(filename, "wb") as f:
-            f.write(audio_data)
-            convert_file(filename, temp_filename)
-        os.remove(filename)
-    else:
-        # if it is already a wav file, just save it as temp_audio.wav
-        with open(temp_filename, "wb") as f:
-            f.write(audio_data)
-    try:
-        transcript = transcribe_long_audio(model, processor, temp_filename)
-    finally:
-        # clean up temp file
-        os.remove(temp_filename)
-
-    return transcript
-
-def load_model(repo):
+def init_model(repo):
     model = Wav2Vec2ForCTC.from_pretrained(repo)
     processor = Wav2Vec2Processor.from_pretrained(repo)
     processor.tokenizer.set_target_lang("mus")
     return model, processor
+
+model, processor = init_model(repo_name)
+
+def transcribe_speech(audio_data: bytes, filename):
+
+    # initialize
+    tmp_dir = "./tmp"
+    if not os.path.exists(tmp_dir):
+        os.makedirs(tmp_dir)
+
+    temp_file = str(uuid.uuid4()) + ".wav"
+    temp_file = os.path.join(tmp_dir, temp_file)
+    if not filename.endswith('.wav'):
+        # write and convert to wav
+        tmp_web_file = str(uuid.uuid4()) + "_" + filename
+        tmp_web_file = os.path.join(tmp_dir, tmp_web_file)
+        with open(tmp_web_file, "wb") as f:
+            f.write(audio_data)
+            convert_file(tmp_web_file, temp_file)
+        os.remove(tmp_web_file)
+    else:
+        # if it is already a wav file, just save it as temp_audio.wav
+        with open(temp_file, "wb") as f:
+            f.write(audio_data)
+    try:
+        transcript = transcribe_long_audio(model, processor, temp_file)
+    finally:
+        # clean up temp file
+        os.remove(temp_file)
+
+    return transcript
 
 def load_data(file):
     na_test = load_dataset('csv', data_files=[file], delimiter='\t')
@@ -85,7 +95,7 @@ def transcribe_long_audio(model, processor, wav):
     
     for i, r in enumerate(regions):
         start_time = r.start or 0
-        end_time = r.end or dur
+        end_time = r.end or dur # type: ignore
         seg = signal[int(start_time*sample_rate):int(end_time*sample_rate)]
         preds = decode(model, processor, seg, sample_rate)
         outputs.append(preds)
@@ -111,5 +121,5 @@ if __name__ == "__main__":
     if not wav_file.endswith('.wav'):
         wav_file = convert_file(wav_file)
 
-    model, processor = load_model(repo_name)
+    model, processor = init_model(repo_name)
     transcribe_long_audio(model, processor, wav_file)
