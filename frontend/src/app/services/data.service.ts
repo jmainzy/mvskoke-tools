@@ -2,7 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-const DEV_API = "http://127.0.0.1:8000";
+// const API_URL = "http://127.0.0.1:8000";
+const API_URL = "http://192.241.144.206:8000";
 
 export interface SearchResult {
     title: string;
@@ -28,7 +29,7 @@ export interface AsrResponse {
 
 export class DataService {
     private http = inject(HttpClient);
-    private readonly apiUrl = DEV_API;
+    private readonly apiUrl = API_URL;
 
     search(query: string): Observable<SearchResponse> {
         return this.http.get<SearchResponse>(`${this.apiUrl}/search/`, {
