@@ -9,7 +9,8 @@ from typing import List
 
 from sentence_transformers import SentenceTransformer
 
-DEFAULT_EMBEDDINGS_MODEL = "BAAI/bge-small-en-v1.5"
+# DEFAULT_EMBEDDINGS_MODEL = "BAAI/bge-small-en-v1.5"
+DEFAULT_EMBEDDINGS_MODEL = "./models/bge-small-en-v1.5" #local path to the model
 
 class BaseEmbedder(ABC):
     """Base class for Embedder."""

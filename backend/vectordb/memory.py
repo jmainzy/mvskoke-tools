@@ -59,6 +59,18 @@ class Memory:
 
         self.vector_search = VectorSearch()
 
+    def load_from_file(self, memory_file: str):
+        """
+        Loads memory from a file.
+
+        :param memory_file: a string containing the path to the memory file.
+        """
+        load = Storage(memory_file).load_from_disk()
+        if len(load) != 1:
+            raise ValueError("Invalid memory file format")
+        self.memory = load[0]["memory"]
+        self.metadata_memory = load[0]["metadata"]
+
     def save(
         self,
         texts,
