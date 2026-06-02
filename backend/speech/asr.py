@@ -11,20 +11,21 @@ import uuid
 # model repo
 BIG_MODEL = "./models/mms-1b"
 SMALL_MODEL = "./models/mms-300m"
-repo_name = BIG_MODEL
+repo_name = SMALL_MODEL
 
 def init_model(repo):
     model = Wav2Vec2ForCTC.from_pretrained(repo)
-    processor = Wav2Vec2Processor.from_pretrained(repo)
+    processor = Wav2Vec2Processor.from_pretrained(repo, 
+    low_cpu_mem_usage=True)
     processor.tokenizer.set_target_lang("mus")
     return model, processor
 
-model, processor = init_model(repo_name)
 
 def transcribe_speech(audio_data: bytes, filename):
 
     # initialize
     tmp_dir = "./tmp"
+    model, processor = init_model(repo_name)
     if not os.path.exists(tmp_dir):
         os.makedirs(tmp_dir)
 
