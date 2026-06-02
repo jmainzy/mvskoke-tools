@@ -1,7 +1,8 @@
 fastapi[standard]
-uvicorn==0.46.0
-sentence-transformers==5.5.0
+uvicorn==0.48.0
+sentence-transformers==5.5.1
 datasets==4.8.5
 librosa==0.11.0
 auditok==0.4.2
+faiss-cpu==1.14.2
 ffmpeg-python==0.2.0

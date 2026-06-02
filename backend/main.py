@@ -40,10 +40,10 @@ async def perform_search(query: str):
 @app.post("/asr/")
 async def perform_asr(audio_file: UploadFile = File(...)):
     audio_data = await audio_file.read()
-    transcript = transcribe_speech(audio_data, audio_file.filename)
+    # transcript = transcribe_speech(audio_data, audio_file.filename)
 
     return {
         "filename": audio_file.filename,
         "content_type": audio_file.content_type,
-        "transcript": transcript,
+        "transcript": "ASR feature is currently unavailable. Please check back later.",
     }

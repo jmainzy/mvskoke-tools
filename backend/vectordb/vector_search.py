@@ -6,17 +6,18 @@ This module provides the VectorSearch class for performing vector search using v
 
 from typing import List, Tuple
 import numpy as np
+import faiss
 
 
-MRPT_LOADED = True
-try:
-    import mrpt
-except ImportError:
-    print(
-        "Warning: mrpt could not be imported. Install with 'pip install git+https://github.com/vioshyvo/mrpt/'. "
-        "Falling back to Faiss."
-    )
-    MRPT_LOADED = False
+# MRPT_LOADED = True
+# try:
+#     import mrpt
+# except ImportError:
+#     print(
+#         "Warning: mrpt could not be imported. Install with 'pip install git+https://github.com/vioshyvo/mrpt/'. "
+#         "Falling back to Faiss."
+#     )
+MRPT_LOADED = False
 
 
 class VectorSearch:
@@ -53,50 +54,50 @@ class VectorSearch:
        
         return np.array(ii), np.array(dd)
 
-    @staticmethod
-    def run_mrpt(vector, vectors, k=15, batch_results="flatten"):
-        """
-        Search for the most similar vectors using MRPT method.
-        """
-        index = mrpt.MRPTIndex(vectors)
-
-        if (
-            isinstance(vector, (list, np.ndarray)) and len(np.shape(vector)) > 1
-        ):  # If vector is a list of vectors
-            res = index.exact_search(
-                np.array(vector).astype(np.float32), k, return_distances=True
-            )
-
-            if batch_results == "diverse":
-                return VectorSearch.get_unique_k_elements(
-                    res[0], res[1], k, diverse=True
-                )
-
-            return VectorSearch.get_unique_k_elements(res[0], res[1], k, diverse=False)
-        res = index.exact_search(
-            np.array(vector).astype(np.float32), k, return_distances=True
-        )
-        return res[0].tolist(), res[1].tolist()
-
     # @staticmethod
-    # def run_faiss(vector, vectors, k=15, batch_results="flatten"):
+    # def run_mrpt(vector, vectors, k=15, batch_results="flatten"):
     #     """
-    #     Search for the most similar vectors using Faiss method.
+    #     Search for the most similar vectors using MRPT method.
     #     """
-    #     index = faiss.IndexFlatL2(vectors.shape[1])
-    #     index.add(vectors)
+    #     index = mrpt.MRPTIndex(vectors)
 
     #     if (
     #         isinstance(vector, (list, np.ndarray)) and len(np.shape(vector)) > 1
     #     ):  # If vector is a list of vectors
-
-    #         dis, indices = index.search(np.array(vector), k)
+    #         res = index.exact_search(
+    #             np.array(vector).astype(np.float32), k, return_distances=True
+    #         )
 
     #         if batch_results == "diverse":
-    #             return VectorSearch.get_unique_k_elements(indices, dis, k, diverse=True)
-    #         return VectorSearch.get_unique_k_elements(indices, dis, k, diverse=False)
-    #     dis, indices = index.search(np.array([vector]), k)
-    #     return indices[0], dis[0]
+    #             return VectorSearch.get_unique_k_elements(
+    #                 res[0], res[1], k, diverse=True
+    #             )
+
+    #         return VectorSearch.get_unique_k_elements(res[0], res[1], k, diverse=False)
+    #     res = index.exact_search(
+    #         np.array(vector).astype(np.float32), k, return_distances=True
+    #     )
+    #     return res[0].tolist(), res[1].tolist()
+
+    @staticmethod
+    def run_faiss(vector, vectors, k=15, batch_results="flatten"):
+        """
+        Search for the most similar vectors using Faiss method.
+        """
+        index = faiss.IndexFlatL2(vectors.shape[1])
+        index.add(vectors)
+
+        if (
+            isinstance(vector, (list, np.ndarray)) and len(np.shape(vector)) > 1
+        ):  # If vector is a list of vectors
+
+            dis, indices = index.search(np.array(vector), k)
+
+            if batch_results == "diverse":
+                return VectorSearch.get_unique_k_elements(indices, dis, k, diverse=True)
+            return VectorSearch.get_unique_k_elements(indices, dis, k, diverse=False)
+        dis, indices = index.search(np.array([vector]), k)
+        return indices[0], dis[0]
 
     @staticmethod
     def search_vectors(
@@ -122,9 +123,9 @@ class VectorSearch:
             embeddings = np.array(embeddings).astype(np.float32)
 
         # if len(embeddings) < 3000 or not MRPT_LOADED:
-            # call_search = VectorSearch.run_faiss
+        call_search = VectorSearch.run_faiss
         # else:
-        call_search = VectorSearch.run_mrpt
+        # call_search = VectorSearch.run_mrpt
 
         indices, dis = call_search(query_embedding, embeddings, top_n, batch_results)
 
