@@ -6,6 +6,7 @@ from models import SearchResult
 import os
 
 data_dir = "./data"
+memory_cache = "./data/memory_index.cache"
 memory = Memory(chunking_strategy={'mode':'sliding_window', 'window_size':20, 'overlapp':8})
 logger = logging.getLogger()
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -17,7 +18,7 @@ def load_corpus():
         if filename.endswith('.txt'):
             with open(os.path.join(data_dir, filename), 'r', encoding='utf-8') as f:
                 text = f.read()
-                memory.save(text, metadata=[{"filename": filename}])
+                memory.save(text, metadata=[{"filename": filename}], memory_file=memory_cache)
 
 def search(query: str) -> list[SearchResult]:
     if memory.is_empty():
@@ -35,6 +36,8 @@ def search(query: str) -> list[SearchResult]:
             location=metadata.get('filename', 'Unknown'),
             distance=result['distance']
         ))
+
+    memory.clear()  # Clear memory after search to free up resources
     return search_results
 
 if __name__ == "__main__":
