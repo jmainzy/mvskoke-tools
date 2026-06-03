@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 // const API_URL = "http://127.0.0.1:8000";
-const API_URL = "http://192.241.144.206:8000";
+// const API_URL = "http://192.241.144.206:8000";
+const API_URL = "https://api.nativeware.dev";
 
 export interface SearchResult {
     title: string;
