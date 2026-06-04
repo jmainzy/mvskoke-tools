@@ -52,10 +52,14 @@ export class CreekFmComponent implements AfterViewInit, OnDestroy {
     currentHistoryIndex = -1;
     isPlaying = false;
     shuffleOn = false;
-    channels: string[] = ['Radio Show', 'Songs', 'Stories', 'Interviews'];
+    channels: string[] = ['All', 'Radio Show', 'Songs', 'Stories', 'Interviews'];
     selectedChannel = this.channels[0];
 
     get playlist(): PlaylistItem[] {
+        if (this.selectedChannel === 'All') {
+            return Object.values(this.playlists).flat();
+        }
+
         return this.playlists[this.selectedChannel] ?? [];
     }
 
