@@ -19,9 +19,8 @@ export class CreekFmComponent implements AfterViewInit, OnDestroy {
 
     playlists: Record<string, PlaylistItem[]> = {
         'Radio Show': [
-            { title: 'Weekly Report', src: 'https://wmit-pages-prod.s3.amazonaws.com/wp-content/uploads/sites/148/2016/12/10183157/mus08010.mp3' },
-            { title: 'Music Hour Special', src: 'https://wmit-pages-prod.s3.amazonaws.com/wp-content/uploads/sites/148/2016/12/10182445/mus08002.mp3' },
-            { title: 'Community News', src: 'https://wmit-pages-prod.s3.amazonaws.com/wp-content/uploads/sites/148/2016/12/10182754/mus08003.mp3' },
+            { title: 'Spencer Frank 23', src: 'mus02023.mp3' },
+            { title: 'Spencer Frank 28', src: 'mus02028.mp3' },
         ],
         'Songs': [
             { title: 'Ohrolope Mucvsepen', src: 'https://esyvhiketv.sfo3.cdn.digitaloceanspaces.com/ohrolope-mucvsepen-mvskoke-hymns.mp3' },
@@ -43,9 +42,9 @@ export class CreekFmComponent implements AfterViewInit, OnDestroy {
             { title: 'The young man who turned into a snake', src: 'https://wmit-pages-prod.s3.amazonaws.com/wp-content/uploads/sites/148/2016/12/10183157/mus08010.mp3' },
         ],
         'Interviews': [
-            { title: 'Edna', src: 'https://wmit-pages-prod.s3.amazonaws.com/wp-content/uploads/sites/148/2016/12/10183103/mus08008.mp3' },
-            { title: 'Language Preservation', src: 'https://wmit-pages-prod.s3.amazonaws.com/wp-content/uploads/sites/148/2016/12/10183131/mus08009.mp3' },
-            { title: 'Gracine', src: 'https://wmit-pages-prod.s3.amazonaws.com/wp-content/uploads/sites/148/2016/12/10183157/mus08010.mp3' },
+            { title: 'Veteran\'s Rountable, 2006', src: 'mus16035.mp3' },
+            { title: 'Jerry Lee Harjo', src: 'mus16038.mp3' },
+            { title: 'Inna Ann Hickey', src: 'mus16045.mp3' },
         ],
     };
 
