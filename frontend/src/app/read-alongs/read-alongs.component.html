@@ -1,0 +1,16 @@
+<main class="read-alongs-page">
+    <section class="read-alongs-card" aria-label="ReadAlongs">
+        <a class="action-link" routerLink="/">Back to Home</a>
+        <h1>Read-alongs</h1>
+
+        <section class="read-alongs-list">
+            <a *ngFor="let item of items" class="read-along-card" [routerLink]="['/read-alongs', item.id]">
+                <img class="read-along__thumb" [src]="item.img" [alt]="item.title + ' preview'" />
+                <div class="read-along__meta">
+                    <div class="read-along__title">{{ item.title }}</div>
+                    <p class="read-along__preview">{{ item.preview }}</p>
+                </div>
+            </a>
+        </section>
+    </section>
+</main>

@@ -1,0 +1,20 @@
+<main class="read-along-detail-page">
+    <section class="read-alongs-card">
+        <a class="action-link" routerLink="/read-alongs">← Back to Read-alongs</a>
+
+        <ng-container *ngIf="item; else missing">
+            <h1>{{ item.title }}</h1>
+            <img [src]="item.img" [alt]="item.title" class="detail-thumb" />
+            <p>{{ item.preview }}</p>
+
+            <section>
+                <h2>Content</h2>
+                <p>Placeholder for full read-along content, audio, and synchronized text.</p>
+            </section>
+        </ng-container>
+
+        <ng-template #missing>
+            <p>Read-along not found.</p>
+        </ng-template>
+    </section>
+</main>
