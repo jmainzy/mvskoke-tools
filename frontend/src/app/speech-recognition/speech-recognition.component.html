@@ -3,6 +3,10 @@
         <a class="action-link" routerLink="/">Back to Home</a>
         <!-- <p class="eyebrow">Speech Recognition</p> -->
         <h1>Speech Recognition</h1>
+        <div class="warning-note" role="status">
+            My server doesn't have enough compute power to serve this model right now. But the idea is that you could
+            input Mvskoke audio, and it would output Mvskoke text in the box below.
+        </div>
 
         <div class="input-row" aria-label="Audio input options">
             <section class="drop-zone" [class.drop-zone--active]="isDraggingFile" aria-label="Audio file upload">
