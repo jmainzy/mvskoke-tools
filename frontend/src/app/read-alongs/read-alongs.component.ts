@@ -5,6 +5,7 @@ import { RouterLink } from '@angular/router';
 interface ReadAlongItem {
     id: string;
     title: string;
+    subtitle?: string;
     preview: string;
     img: string;
 }
@@ -19,23 +20,12 @@ interface ReadAlongItem {
 export class ReadAlongsComponent {
     items: ReadAlongItem[] = [
         {
-            id: 'story-1',
-            title: 'The Three Brothers',
-            preview: 'A short traditional tale about three brothers and a spotted horse.',
-            img: this.svgDataUrl('The Three Brothers')
+            id: 'postoak-1',
+            title: 'John R. Postoak letter to A. E. W. Robertson',
+            subtitle: 'December 11, 1878',
+            preview: 'Hiyomat vm opunvkv mahusan es cen coyet omis. Vm vnokeckv vm vhayv tate toyetskat...',
+            img: 'read-alongs/postoak-01.png',
         },
-        {
-            id: 'story-2',
-            title: 'Rabbit Steals Fire',
-            preview: 'A classic trickster story about Rabbit and the origin of fire.',
-            img: this.svgDataUrl('Rabbit Steals Fire')
-        },
-        {
-            id: 'story-3',
-            title: 'Turtle Races Wolf',
-            preview: 'Turtle outsmarts Wolf in a surprising race.',
-            img: this.svgDataUrl('Turtle Races Wolf')
-        }
     ];
 
     private svgDataUrl(text: string): string {

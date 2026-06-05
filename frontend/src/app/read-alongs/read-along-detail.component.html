@@ -1,16 +1,26 @@
 <main class="read-along-detail-page">
     <section class="read-alongs-card">
-        <a class="action-link" routerLink="/read-alongs">← Back to Read-alongs</a>
+        <a class="action-link" routerLink="/read-alongs">← Back to ReadAlongs</a>
 
-        <ng-container *ngIf="item; else missing">
-            <h1>{{ item.title }}</h1>
-            <img [src]="item.img" [alt]="item.title" class="detail-thumb" />
-            <p>{{ item.preview }}</p>
+        <!-- ReadAlong Web Component -->
+        <ng-container *ngIf="item">
+            <read-along href="read-alongs/postoak-01.readalong" audio="read-alongs/postoak-01.wav" theme="light"
+                language="eng" image-assets-folder="read-alongs">
+                <span slot="read-along-header">{{ item.title }}</span>
+                <span slot="read-along-subheader">{{ item.subtitle || item.preview }}</span>
+            </read-along>
 
-            <section>
-                <h2>Content</h2>
-                <p>Placeholder for full read-along content, audio, and synchronized text.</p>
-            </section>
+            <ng-container *ngIf="item">
+                <ng-container *ngIf="item.source; else imgOnly">
+                    <a class="read-along-extra-link" [href]="item.source" target="_blank" rel="noopener noreferrer">
+                        <img *ngIf="item.img" class="read-along-extra-img" [src]="item.img" [alt]="item.title + ' image'" />
+                    </a>
+                </ng-container>
+
+                <ng-template #imgOnly>
+                    <img *ngIf="item.img" class="read-along-extra-img" [src]="item.img" [alt]="item.title + ' image'" />
+                </ng-template>
+            </ng-container>
         </ng-container>
 
         <ng-template #missing>
