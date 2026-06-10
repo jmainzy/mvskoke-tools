@@ -31,12 +31,11 @@
             <article class="result-card" *ngFor="let result of results">
                 <div class="result-card__header">
                     <h2>{{ result.title }}</h2>
-                    <p class="location">{{ result.location }}</p>
+                    <p class="location">{{ result.type }}</p>
                 </div>
                 <p class="excerpt">{{ result.excerpt }}</p>
-                <!-- <ul class="tags" aria-label="Result tags">
-                    <li *ngFor="let tag of result.tags">{{ tag }}</li>
-                </ul> -->
+                <p class="excerpt_subtitle">{{ result.excerpt_subtitle }}</p>
+
             </article>
         </section>
 

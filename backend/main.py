@@ -2,7 +2,7 @@ from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from speech.asr import transcribe_speech
 from models import SearchResult, SearchResponse
-import corpus_tools
+import search.core as search
 
 app = FastAPI()
 
@@ -29,7 +29,7 @@ async def root():
 @app.get("/search/")
 async def perform_search(query: str):
     
-    results = corpus_tools.search(query)
+    results = search.search(query)
 
     return SearchResponse(
         query=query,

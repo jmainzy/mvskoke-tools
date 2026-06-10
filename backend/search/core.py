@@ -2,8 +2,9 @@ import logging
 import sys
 from vectordb import Memory
 from models import SearchResult
-
+from .parsers import parse_file, get_excerpt
 import os
+from tqdm import tqdm
 
 data_dir = "./data"
 memory_cache = "./data/memory_index.cache"
@@ -12,7 +13,7 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 def load_corpus() -> Memory:
     logger.info(f"Loading corpus from {data_dir}")
-    memory = Memory(chunking_strategy={'mode':'sliding_window', 'window_size':20, 'overlapp':8}, memory_file=memory_cache)
+    memory = Memory(chunking_strategy={'mode':'paragraph'}, memory_file=memory_cache)
 
     # load from cache if exists
     if os.path.exists(memory_cache) and not memory.is_empty():
@@ -20,12 +21,22 @@ def load_corpus() -> Memory:
         return memory
     else:
         # load text into Memory
-        for filename in os.listdir(data_dir):
+        files = os.listdir(data_dir)
+        for i in tqdm(range(len(files))):
+            filename = files[i]
             if filename.endswith('.txt'):
-                with open(os.path.join(data_dir, filename), 'r', encoding='utf-8') as f:
-                    text = f.read()
-                    memory.save(text, metadata=[{"filename": filename}], memory_file=memory_cache)
+                metadatas, texts = parse_file(os.path.join(data_dir, filename))
+                memory.save(texts, 
+                            metadata=metadatas, 
+                            memory_file=memory_cache)
+            i+=1
     return memory
+
+
+def clean_title(filename: str) -> str:
+    # Remove file extension and replace underscores with spaces
+    title = os.path.splitext(filename)[0].replace('_', ' ')
+    return title
 
 def search(query: str) -> list[SearchResult]:
     memory = load_corpus()
@@ -35,10 +46,18 @@ def search(query: str) -> list[SearchResult]:
     search_results = []
     for result in results:
         metadata = result['metadata']
+        filename = metadata.get('filename', 'Unknown')
+        filename = os.path.join(data_dir, filename)
+        title = clean_title(metadata.get('filename', 'Unknown'))
+        excerpt1, excerpt2 = get_excerpt(
+            metadata.get('line'), 
+            filename)
         search_results.append(SearchResult(
-            title=metadata.get('filename', 'Unknown'),
-            excerpt=result['chunk'],
+            title=title,
+            excerpt=excerpt1,
+            excerpt_subtitle=excerpt2,
             location=metadata.get('filename', 'Unknown'),
+            type=metadata.get('genre', 'Unknown'),
             distance=result['distance']
         ))
 
