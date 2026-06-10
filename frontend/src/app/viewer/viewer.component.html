@@ -1,0 +1,18 @@
+<main class="viewer-page">
+    <section class="viewer-shell">
+        <div class="viewer-actions">
+            <a class="primary-action" routerLink="/search">Back to search</a>
+        </div>
+
+        <header class="viewer-hero">
+            <h1 class="viewer-title">{{ title }}</h1>
+            <p class="viewer-filename">{{ filename }}</p>
+        </header>
+
+        <section class="viewer-content">
+            <div *ngIf="isLoading" class="loading">Loading...</div>
+            <div *ngIf="error" class="error">{{ error }}</div>
+            <pre class="file-content" *ngIf="!isLoading && !error">{{ content }}</pre>
+        </section>
+    </section>
+</main>

@@ -1,0 +1,49 @@
+.viewer-page {
+    padding: 1.5rem;
+}
+
+.viewer-hero {
+    margin-bottom: 1rem;
+}
+
+.viewer-title {
+    margin: 0 0 0.25rem 0;
+    font-size: 1.25rem;
+}
+
+.viewer-filename {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.viewer-content {
+    margin-top: 1rem;
+}
+
+.file-content {
+    background: #ffffff;
+    border: 1px solid #e6e6e6;
+    padding: 1rem;
+    border-radius: 6px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    max-height: 70vh;
+    overflow: auto;
+}
+
+.loading {
+    color: #333;
+}
+
+.error {
+    color: #b00020;
+}
+
+.primary-action {
+    text-decoration: none;
+    color: #0b5fff;
+}

@@ -25,18 +25,26 @@
             <h2>{{ resultHeading }}</h2>
             <div class="results-meta">
                 <span>{{ results.length }} matches</span>
-                <span>Corpus preview</span>
             </div>
 
-            <article class="result-card" *ngFor="let result of results">
-                <div class="result-card__header">
-                    <h2>{{ result.title }}</h2>
-                    <p class="location">{{ result.type }}</p>
-                </div>
-                <p class="excerpt">{{ result.excerpt }}</p>
-                <p class="excerpt_subtitle">{{ result.excerpt_subtitle }}</p>
-
-            </article>
+            <div class="results-list">
+                <article class="result-card" *ngFor="let group of groupedResults">
+                    <a class="result-link" [routerLink]="['/view', group.filename]">
+                        <div class="result-card__header">
+                            <h2>{{ group.title }}</h2>
+                            <p class="location">{{ group.type }} • {{ group.matches.length }} match{{
+                                group.matches.length > 1 ? 'es' : '' }}</p>
+                        </div>
+                        <div class="group-matches">
+                            <div class="match" *ngFor="let m of group.matches; let i = index">
+                                <p class="excerpt">{{ m.excerpt }}</p>
+                                <p class="excerpt_subtitle">{{ m.excerpt_subtitle }}</p>
+                                <hr *ngIf="i < group.matches.length - 1" />
+                            </div>
+                        </div>
+                    </a>
+                </article>
+            </div>
         </section>
 
         <div class="loading-container" *ngIf="isLoading" aria-live="polite" aria-label="Loading search results">

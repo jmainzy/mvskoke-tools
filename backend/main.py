@@ -1,4 +1,5 @@
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, HTTPException
+import os
 from fastapi.middleware.cors import CORSMiddleware
 from speech.asr import transcribe_speech
 from models import SearchResult, SearchResponse
@@ -47,3 +48,21 @@ async def perform_asr(audio_file: UploadFile = File(...)):
         "content_type": audio_file.content_type,
         "transcript": "ASR feature is currently unavailable. Please check back later.",
     }
+
+
+@app.get("/files/{filename}")
+async def get_file(filename: str):
+    # Serve text file content from the data directory. Validate path to avoid directory traversal.
+    data_dir = os.path.abspath("data")
+    requested = os.path.abspath(os.path.join(data_dir, filename))
+    if not requested.startswith(data_dir):
+        raise HTTPException(status_code=400, detail="Invalid filename")
+    if not os.path.exists(requested):
+        raise HTTPException(status_code=404, detail="File not found")
+    try:
+        with open(requested, "r", encoding="utf-8") as fh:
+            content = fh.read()
+    except Exception:
+        raise HTTPException(status_code=500, detail="Failed to read file")
+
+    return {"filename": filename, "content": content}

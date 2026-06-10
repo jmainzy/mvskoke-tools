@@ -25,6 +25,11 @@ export interface AsrResponse {
     transcript: string;
 }
 
+export interface FileResponse {
+    filename: string;
+    content: string;
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -52,6 +57,11 @@ export class DataService {
 
     getEntry(id: string): Observable<SearchResult> {
         return this.http.get<SearchResult>(`${this.apiUrl}/entries/${id}`);
+    }
+
+    getFileContent(filename: string): Observable<FileResponse> {
+        // filename is expected to be the base filename like '1871_Creek_Second_Reader.txt'
+        return this.http.get<FileResponse>(`${this.apiUrl}/files/${encodeURIComponent(filename)}`);
     }
 
     getSuggestions(partial: string): Observable<string[]> {

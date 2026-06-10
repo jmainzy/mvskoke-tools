@@ -5,6 +5,7 @@ import { SpeechRecognitionComponent } from './speech-recognition/speech-recognit
 import { CreekFmComponent } from './creek-fm/creek-fm.component';
 import { ReadAlongsComponent } from './read-alongs/read-alongs.component';
 import { ReadAlongDetailComponent } from './read-alongs/read-along-detail.component';
+import { ViewerComponent } from './viewer/viewer.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -13,5 +14,6 @@ export const routes: Routes = [
     { path: 'creek-fm', component: CreekFmComponent },
     { path: 'read-alongs', component: ReadAlongsComponent },
     { path: 'read-alongs/:id', component: ReadAlongDetailComponent },
+    { path: 'view/:filename', component: ViewerComponent },
     { path: '**', redirectTo: '' }
 ];
