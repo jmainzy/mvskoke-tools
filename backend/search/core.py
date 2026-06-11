@@ -41,7 +41,7 @@ def clean_title(filename: str) -> str:
 def search(query: str) -> list[SearchResult]:
     memory = load_corpus()
     logger.info(f"Received search query: {query}")
-    results = memory.search(query)
+    results = memory.search(query, top_n=50)
 
     search_results = []
     for result in results:

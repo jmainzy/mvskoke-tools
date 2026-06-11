@@ -14,12 +14,12 @@ def get_excerpt(line_number, filename) -> tuple[str, str]:
     excerpt2 = ""
     with open(filename, 'r', encoding='utf-8') as f:
         lines = f.readlines()
-        excerpt1 = lines[line_number]
+        excerpt1 = lines[line_number].replace('§','')
         next_line = lines[line_number+1]
-        if next_line and remove_tag(next_line):
+        if next_line and remove_tag(next_line) and not '\\gls' in next_line:
             excerpt2 = next_line
         else:
-            excerpt2 = lines[line_number-1].strip()
+            excerpt2 = lines[line_number-1].strip().replace('§','')
     return remove_tag(excerpt1), remove_tag(excerpt2)
 
 def extract_fields(text, metadata):

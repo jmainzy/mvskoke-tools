@@ -4,7 +4,7 @@ This module provides the VectorSearch class for performing vector search using v
 
 # pylint: disable = line-too-long, trailing-whitespace, trailing-newlines, line-too-long, missing-module-docstring, import-error, too-few-public-methods, too-many-instance-attributes, too-many-locals
 
-from typing import List, Tuple
+from typing import List, Tuple, Union
 import numpy as np
 import faiss
 
@@ -101,8 +101,8 @@ class VectorSearch:
 
     @staticmethod
     def search_vectors(
-        query_embedding: List[float],
-        embeddings: List[List[float]],
+        query_embedding: Union[List[float], np.ndarray],
+        embeddings: Union[List[List[float]], np.ndarray],
         top_n: int,
         batch_results: str = "flatten",
     ) -> List[Tuple[int, float]]:

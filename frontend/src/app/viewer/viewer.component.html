@@ -6,13 +6,13 @@
 
         <header class="viewer-hero">
             <h1 class="viewer-title">{{ title }}</h1>
-            <p class="viewer-filename">{{ filename }}</p>
+            <!-- <p class="viewer-filename">{{ filename }}</p> -->
         </header>
 
         <section class="viewer-content">
             <div *ngIf="isLoading" class="loading">Loading...</div>
             <div *ngIf="error" class="error">{{ error }}</div>
-            <div class="file-content" *ngIf="!isLoading && !error">
+            <div class="file-content" #fileContentContainer *ngIf="!isLoading && !error">
                 <div class="file-line" *ngFor="let line of fileLines" [ngClass]="{
                     'mus-line': line.tag === 'mus',
                     'en-line': line.tag === 'en',

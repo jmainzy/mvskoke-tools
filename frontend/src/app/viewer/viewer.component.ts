@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DataService } from '../services/data.service';
 
@@ -10,9 +10,11 @@ import { DataService } from '../services/data.service';
     templateUrl: './viewer.component.html',
     styleUrls: ['./viewer.component.scss']
 })
-export class ViewerComponent implements OnInit {
+export class ViewerComponent implements OnInit, AfterViewInit {
     private readonly route = inject(ActivatedRoute);
     private readonly dataService = inject(DataService);
+
+    @ViewChild('fileContentContainer') fileContentContainer?: ElementRef<HTMLDivElement>;
 
     filename = '';
     title = '';
@@ -27,6 +29,7 @@ export class ViewerComponent implements OnInit {
             this.highlightLines = this.parseHighlightParams(params.get('hl'));
             if (this.content) {
                 this.fileLines = this.parseFileLines(this.content);
+                this.scrollToFirstHighlight();
             }
         });
 
@@ -40,6 +43,10 @@ export class ViewerComponent implements OnInit {
         });
     }
 
+    ngAfterViewInit(): void {
+        this.scrollToFirstHighlight();
+    }
+
     private fetchFile(filename: string): void {
         this.isLoading = true;
         this.error = null;
@@ -48,6 +55,7 @@ export class ViewerComponent implements OnInit {
                 this.content = res.content;
                 this.fileLines = this.parseFileLines(this.content);
                 this.isLoading = false;
+                setTimeout(() => this.scrollToFirstHighlight(), 100);
             },
             error: (err) => {
                 console.error('Failed to load file:', err);
@@ -104,5 +112,15 @@ export class ViewerComponent implements OnInit {
 
     private cleanTitle(filename: string): string {
         return filename.replace(/\.txt$/i, '').replace(/_/g, ' ');
+    }
+
+    private scrollToFirstHighlight(): void {
+        if (!this.fileContentContainer) {
+            return;
+        }
+        const highlightedElement = this.fileContentContainer.nativeElement.querySelector('.highlight-line');
+        if (highlightedElement) {
+            highlightedElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
     }
 }

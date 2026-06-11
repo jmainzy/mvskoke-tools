@@ -22,8 +22,8 @@ class Memory:
 
     def __init__(
         self,
-        memory_file: str = None,
-        chunking_strategy: dict = None,
+        memory_file: str = '',
+        chunking_strategy: dict = {},
         embeddings: Union[BaseEmbedder, str] = "normal",
     ):
         """
@@ -43,7 +43,7 @@ class Memory:
             self.memory = [] if len(load) != 1 else load[0]["memory"]
             self.metadata_memory = [] if len(load) != 1 else load[0]["metadata"]
 
-        if chunking_strategy is None:
+        if not chunking_strategy:
             chunking_strategy = {"mode": "sliding_window"}
         self.chunker = Chunker(chunking_strategy)
 
@@ -75,7 +75,7 @@ class Memory:
         self,
         texts,
         metadata: Union[List, List[dict], None] = None,
-        memory_file: str = None,
+        memory_file: str = '',
     ):
         """
         Saves the given texts and metadata to memory.
@@ -106,7 +106,7 @@ class Memory:
             metadata
         )  # Update the counter for future save operations
 
-        if memory_file is None:
+        if not memory_file:
             memory_file = self.memory_file
 
         text_chunks = [self.chunker(text) for text in texts]
@@ -116,21 +116,22 @@ class Memory:
 
         embeddings = self.embedder.embed_text(flatten_chunks)
 
-        text_index_start = (
-            self.text_index_counter
-        )  # Starting index for this save operation
-        self.text_index_counter += len(texts)
+        # text_index_start = (
+        #     self.text_index_counter
+        # )  # Starting index for this save operation
 
         # accumulated size is end_index of each chunk
-        for size, end_index, chunks, meta_index, text_index in zip(
+        for size, end_index, chunks, meta_index, i in zip(
             chunks_size,
             itertools.accumulate(chunks_size),
             text_chunks,
             range(meta_index_start, self.metadata_index_counter),
-            range(text_index_start, self.text_index_counter),
+            range(0, len(text_chunks))
         ):
             start_index = end_index - size
             chunks_embedding = embeddings[start_index:end_index]
+            filename = metadata[i]['filename']
+            text_index = int.from_bytes(filename.encode(), 'little')
 
             for chunk, embedding in zip(chunks, chunks_embedding):
                 entry = {
@@ -141,7 +142,7 @@ class Memory:
                 }
                 self.memory.append(entry)
 
-        if memory_file is not None:
+        if not memory_file:
             Storage(memory_file).save_to_disk([{"memory": self.memory, "metadata" :self.metadata_memory}])
 
     def search(
@@ -158,7 +159,10 @@ class Memory:
         """
 
         if isinstance(query, list):
-            query_embedding = self.embedder.embed_text(query)
+            embedded = self.embedder.embed_text(query)
+            if not embedded:
+                return []
+            query_embedding = embedded[0]
         else:
             query_embedding = self.embedder.embed_text([query])[0]
 
@@ -183,6 +187,11 @@ class Memory:
                     )  # Use seen_text_indices instead of seen_meta_indices
             indices = unique_indices
 
+        # filter out high distance
+        threshold = 0.59
+        indices = [i for i in indices if i[1] <= threshold]
+        # order by distance (most relevant)
+
         results = [
             {
                 "chunk": self.memory[i[0]]["chunk"],
@@ -203,7 +212,7 @@ class Memory:
         self.metadata_index_counter = 0
         self.text_index_counter = 0
 
-        if self.memory_file is not None:
+        if self.memory_file:
             Storage(self.memory_file).save_to_disk([{"memory": self.memory, "metadata" :self.metadata_memory}])
 
     def dump(self):
