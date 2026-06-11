@@ -48,3 +48,4 @@ Thumbs.db
 backend/.venv
 backend/data
 run.sh
+.env

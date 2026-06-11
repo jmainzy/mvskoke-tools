@@ -31,6 +31,7 @@ async def root():
 async def perform_search(query: str):
     
     results = search.search(query)
+    print(f'found {len(results)} results')
 
     return SearchResponse(
         query=query,
