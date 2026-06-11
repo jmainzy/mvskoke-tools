@@ -17,7 +17,7 @@ export class SearchResultsComponent implements OnInit {
 
     searchTerm = '';
     results: SearchResult[] = [];
-    groupedResults: { filename: string; title: string; type: string; matches: SearchResult[] }[] = [];
+    groupedResults: { filename: string; title: string; type: string; matches: SearchResult[]; highlightParam: string }[] = [];
     isLoading = false;
     error: string | null = null;
 
@@ -63,13 +63,22 @@ export class SearchResultsComponent implements OnInit {
     exampleSearchTerms = ['Mekusvpkv', 'semvnole', 'church', 'sofke'];
 
     private groupByFilename(results: SearchResult[]) {
-        const map = new Map<string, { filename: string; title: string; type: string; matches: SearchResult[] }>();
+        const map = new Map<string, { filename: string; title: string; type: string; matches: SearchResult[]; highlightParam: string }>();
         for (const r of results) {
             const filename = r.location || 'unknown';
             if (!map.has(filename)) {
-                map.set(filename, { filename, title: r.title || this.cleanTitle(filename), type: r.type || '', matches: [r] });
+                map.set(filename, {
+                    filename,
+                    title: r.title || this.cleanTitle(filename),
+                    type: r.type || '',
+                    matches: [r],
+                    highlightParam: `${r.line}`
+                });
             } else {
-                map.get(filename)!.matches.push(r);
+                const group = map.get(filename)!;
+                group.matches.push(r);
+                const lines = Array.from(new Set(group.matches.map(match => match.line))).sort((a, b) => a - b);
+                group.highlightParam = lines.join(',');
             }
         }
         return Array.from(map.values());

@@ -29,7 +29,8 @@
 
             <div class="results-list">
                 <article class="result-card" *ngFor="let group of groupedResults">
-                    <a class="result-link" [routerLink]="['/view', group.filename]">
+                    <a class="result-link" [routerLink]="['/view', group.filename]"
+                        [queryParams]="{ hl: group.highlightParam }">
                         <div class="result-card__header">
                             <h2>{{ group.title }}</h2>
                             <p class="location">{{ group.type }} • {{ group.matches.length }} match{{

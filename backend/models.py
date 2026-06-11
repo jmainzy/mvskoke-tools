@@ -8,6 +8,7 @@ class SearchResult(BaseModel):
     excerpt_subtitle: str
     location: str
     type: str
+    line: int
     distance: float
 
 class SearchResponse(BaseModel):

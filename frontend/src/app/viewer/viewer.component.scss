@@ -26,13 +26,44 @@
     border: 1px solid #e6e6e6;
     padding: 1rem;
     border-radius: 6px;
-    white-space: pre-wrap;
-    word-break: break-word;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace;
-    font-size: 0.95rem;
+    font-family: Roboto, sans-serif;
+    font-size: 1rem;
     line-height: 1.5;
     max-height: 70vh;
     overflow: auto;
+}
+
+.file-line {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.15rem 0;
+    white-space: pre-wrap;
+}
+
+.file-line.mus-line .line-text {
+    color: #0f2a55;
+}
+
+.file-line.en-line .line-text {
+    color: #64748b;
+}
+
+.file-line.highlight-line {
+    background-color: rgba(250, 204, 21, 0.18);
+    border-radius: 4px;
+}
+
+.line-number {
+    color: #64748b;
+    width: 3rem;
+    flex-shrink: 0;
+    text-align: right;
+    user-select: none;
+}
+
+.line-text {
+    flex: 1;
+    word-break: break-word;
 }
 
 .loading {

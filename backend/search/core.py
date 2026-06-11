@@ -58,6 +58,7 @@ def search(query: str) -> list[SearchResult]:
             excerpt_subtitle=excerpt2,
             location=metadata.get('filename', 'Unknown'),
             type=metadata.get('genre', 'Unknown'),
+            line=metadata.get('line'),
             distance=result['distance']
         ))
 

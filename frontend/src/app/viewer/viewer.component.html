@@ -12,7 +12,16 @@
         <section class="viewer-content">
             <div *ngIf="isLoading" class="loading">Loading...</div>
             <div *ngIf="error" class="error">{{ error }}</div>
-            <pre class="file-content" *ngIf="!isLoading && !error">{{ content }}</pre>
+            <div class="file-content" *ngIf="!isLoading && !error">
+                <div class="file-line" *ngFor="let line of fileLines" [ngClass]="{
+                    'mus-line': line.tag === 'mus',
+                    'en-line': line.tag === 'en',
+                    'highlight-line': line.highlight
+                }">
+                    <span class="line-number">{{ line.lineIndex + 1 }}</span>
+                    <span class="line-text">{{ line.text }}</span>
+                </div>
+            </div>
         </section>
     </section>
 </main>

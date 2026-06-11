@@ -17,10 +17,19 @@ export class ViewerComponent implements OnInit {
     filename = '';
     title = '';
     content = '';
+    fileLines: { text: string; tag: string; highlight: boolean; lineIndex: number }[] = [];
+    highlightLines: number[] = [];
     isLoading = false;
     error: string | null = null;
 
     ngOnInit(): void {
+        this.route.queryParamMap.subscribe(params => {
+            this.highlightLines = this.parseHighlightParams(params.get('hl'));
+            if (this.content) {
+                this.fileLines = this.parseFileLines(this.content);
+            }
+        });
+
         this.route.paramMap.subscribe(params => {
             const filename = params.get('filename');
             if (filename) {
@@ -37,6 +46,7 @@ export class ViewerComponent implements OnInit {
         this.dataService.getFileContent(filename).subscribe({
             next: (res) => {
                 this.content = res.content;
+                this.fileLines = this.parseFileLines(this.content);
                 this.isLoading = false;
             },
             error: (err) => {
@@ -45,6 +55,51 @@ export class ViewerComponent implements OnInit {
                 this.isLoading = false;
             }
         });
+    }
+
+    private parseFileLines(content: string) {
+        const lines = content.split(/\r?\n/);
+        const firstMusIndex = lines.findIndex((rawLine) => rawLine.startsWith('\\mus'));
+        const headerLines = lines.slice(0, firstMusIndex >= 0 ? firstMusIndex : lines.length);
+
+        const header = headerLines.map((rawLine, index) => ({
+            text: (rawLine || '').replace(/§/g, ''),
+            tag: 'header',
+            highlight: this.highlightLines.includes(index),
+            lineIndex: index
+        }));
+
+        const bodyLines = firstMusIndex >= 0 ? lines.slice(firstMusIndex) : [];
+        const body = bodyLines
+            .map((rawLine, index) => {
+                const originalIndex = firstMusIndex + index;
+                const [tagPart, ...rest] = rawLine.split('\t');
+                const normalizedTag = tagPart?.trim();
+                const text = rest.join('\t').trim().replace(/§/g, '');
+                const tag = normalizedTag === '\\mus' ? 'mus'
+                    : normalizedTag === '\\en' ? 'en'
+                        : normalizedTag === '\\gls' ? 'gls'
+                            : 'other';
+                return {
+                    text: text || '',
+                    tag,
+                    highlight: this.highlightLines.includes(originalIndex),
+                    lineIndex: originalIndex
+                };
+            })
+            .filter(line => line.tag !== 'gls');
+
+        return [...header, ...body];
+    }
+
+    private parseHighlightParams(param: string | null): number[] {
+        if (!param) {
+            return [];
+        }
+
+        return param.split(',')
+            .map(value => parseInt(value, 10))
+            .filter(value => !Number.isNaN(value));
     }
 
     private cleanTitle(filename: string): string {

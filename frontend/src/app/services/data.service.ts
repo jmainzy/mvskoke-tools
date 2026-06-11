@@ -10,6 +10,7 @@ export interface SearchResult {
     excerpt: string;
     excerpt_subtitle: string;
     location: string;
+    line: number;
     type: string;
 }
 
