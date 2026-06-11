@@ -11,12 +11,13 @@ memory_cache = "./data/memory_index.cache"
 logger = logging.getLogger()
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
-def load_corpus(rebuild=False) -> Memory:
+def load_corpus(rebuild:bool=False) -> Memory:
     logger.info(f"Loading corpus from {data_dir}")
-    memory = Memory(chunking_strategy={'mode':'paragraph'}, memory_file=memory_cache)
 
-    if rebuild:
+    if rebuild and os.path.exists(memory_cache):
         os.remove(memory_cache)
+
+    memory = Memory(chunking_strategy={'mode':'paragraph'}, memory_file=memory_cache)
 
     # load from cache if exists
     if os.path.exists(memory_cache) and not memory.is_empty():
@@ -33,6 +34,7 @@ def load_corpus(rebuild=False) -> Memory:
                             metadata=metadatas, 
                             memory_file=memory_cache)
             i+=1
+        logger.info(f'saved cache to {memory_cache}')
     return memory
 
 

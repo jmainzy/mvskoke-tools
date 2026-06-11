@@ -142,7 +142,7 @@ class Memory:
                 }
                 self.memory.append(entry)
 
-        if not memory_file:
+        if memory_file:
             Storage(memory_file).save_to_disk([{"memory": self.memory, "metadata" :self.metadata_memory}])
 
     def search(
