@@ -11,9 +11,12 @@ memory_cache = "./data/memory_index.cache"
 logger = logging.getLogger()
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
-def load_corpus() -> Memory:
+def load_corpus(rebuild=False) -> Memory:
     logger.info(f"Loading corpus from {data_dir}")
     memory = Memory(chunking_strategy={'mode':'paragraph'}, memory_file=memory_cache)
+
+    if rebuild:
+        os.remove(memory_cache)
 
     # load from cache if exists
     if os.path.exists(memory_cache) and not memory.is_empty():
@@ -66,6 +69,14 @@ def search(query: str) -> list[SearchResult]:
     return search_results
 
 if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--index", action='store_true', help="rebuild the index file")
+    args = parser.parse_args()
+
+    if (args.index):
+        load_corpus(rebuild=True)
+
     test_query = "mēkusvpkv"
     results = search(test_query)
     for result in results:
