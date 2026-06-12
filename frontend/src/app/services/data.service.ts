@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 const DEV_URL = "http://127.0.0.1:8000";
 const API_URL = "https://api.nativeware.dev";
@@ -37,6 +38,7 @@ export interface FileResponse {
 
 export class DataService {
     private http = inject(HttpClient);
+    private searchCache = new Map<string, SearchResponse>();
     // get the NODE_ENV variable
     private readonly nodeEnv = process.env['NODE_ENV'];
     private apiUrl: string;
@@ -50,10 +52,26 @@ export class DataService {
     }
 
     search(query: string): Observable<SearchResponse> {
+        const normalizedQuery = query.trim().toLowerCase();
+        if (!normalizedQuery) {
+            return of({ query, results: [], total: 0 });
+        }
+
+        const cached = this.searchCache.get(normalizedQuery);
+        if (cached) {
+            return of(cached);
+        }
+
         console.log('response from ' + this.apiUrl);
         return this.http.get<SearchResponse>(`${this.apiUrl}/search/`, {
             params: { query: query }
-        });
+        }).pipe(
+            tap({
+                next: (response) => {
+                    this.searchCache.set(normalizedQuery, response);
+                }
+            })
+        );
     }
 
     getEntry(id: string): Observable<SearchResult> {
