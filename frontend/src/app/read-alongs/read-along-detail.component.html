@@ -4,8 +4,8 @@
 
         <!-- ReadAlong Web Component -->
         <ng-container *ngIf="item">
-            <read-along href="read-alongs/postoak-01.readalong" audio="read-alongs/postoak-01.wav" theme="light"
-                language="eng" image-assets-folder="read-alongs">
+            <read-along [attr.href]="'/read-alongs/' + item.id + '.readalong'"
+                [attr.audio]="'/read-alongs/' + item.id + '.mp3'" theme="light" language="eng">
                 <span slot="read-along-header">{{ item.title }}</span>
                 <span slot="read-along-subheader">{{ item.subtitle || item.preview }}</span>
             </read-along>
@@ -13,7 +13,8 @@
             <ng-container *ngIf="item">
                 <ng-container *ngIf="item.source; else imgOnly">
                     <a class="read-along-extra-link" [href]="item.source" target="_blank" rel="noopener noreferrer">
-                        <img *ngIf="item.img" class="read-along-extra-img" [src]="item.img" [alt]="item.title + ' image'" />
+                        <img *ngIf="item.img" class="read-along-extra-img" [src]="item.img"
+                            [alt]="item.title + ' image'" />
                     </a>
                 </ng-container>
 

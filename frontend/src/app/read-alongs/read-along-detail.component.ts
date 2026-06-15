@@ -1,15 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-
-interface ReadAlongItem {
-    id: string;
-    title: string;
-    subtitle?: string;
-    preview: string;
-    img: string;
-    source: string;
-}
+import { DataService, ReadAlongItem } from '../services/data.service';
 
 @Component({
     selector: 'app-read-along-detail',
@@ -21,21 +13,14 @@ interface ReadAlongItem {
 })
 export class ReadAlongDetailComponent {
     item: ReadAlongItem | undefined;
+    private readonly route = inject(ActivatedRoute);
+    private readonly dataService = inject(DataService);
 
-    private items: ReadAlongItem[] = [
-        {
-            id: 'postoak-1',
-            title: 'John R. Postoak letter to A. E. W. Robertson',
-            subtitle: 'December 11, 1878',
-            preview: 'Hiyomat vm opunvkv mahusan es cen coyet omis. Vm vnokeckv vm vhayv tate toyetskat...',
-            img: 'read-alongs/postoak-01.png',
-            source: 'https://muskogee.pages.wm.edu/wp-content/blogs.dir/3050/files/sites/148/2016/12/mus06051.pdf',
-        },
-    ];
-
-    constructor(private route: ActivatedRoute) {
+    ngOnInit(): void {
         const id = this.route.snapshot.paramMap.get('id') ?? '';
-        this.item = this.items.find((it) => it.id === id);
+        if (id) {
+            this.dataService.getReadAlong(id).subscribe(i => this.item = i);
+        }
     }
 
     private svgDataUrl(text: string): string {

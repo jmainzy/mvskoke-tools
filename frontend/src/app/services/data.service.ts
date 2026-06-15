@@ -32,6 +32,16 @@ export interface FileResponse {
     content: string;
 }
 
+export interface ReadAlongItem {
+    id: string;
+    title: string;
+    subtitle?: string;
+    preview: string;
+    preview_en: string;
+    img: string;
+    source?: string;
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -39,6 +49,27 @@ export interface FileResponse {
 export class DataService {
     private http = inject(HttpClient);
     private searchCache = new Map<string, SearchResponse>();
+    // lightweight in-memory read-alongs list (used by frontend components)
+    private readonly readAlongItems: ReadAlongItem[] = [
+        {
+            id: 'chipbear',
+            title: 'Story of Day and Night',
+            subtitle: 'Chimpunk and Bear',
+            preview: 'Nere nettv onvkuce. Punvttv omvlkvt eto ofv fullat nvkaftvtēs...',
+            preview_en: 'A night and day story. All the animals of the forest had a meeting...',
+            img: 'read-alongs/chipbear.jpg',
+        },
+        {
+            id: 'postoak-01',
+            title: 'John R. Postoak letter to A. E. W. Robertson',
+            subtitle: 'December 11, 1878',
+            preview: 'Hiyomat vm opunvkv mahusan es cen coyet omis. Vm vnokeckv vm vhayv tate toyetskat...',
+            preview_en: 'At this time I am writing you in my very own language. My beloved former teacher...',
+            img: 'read-alongs/postoak-01.png',
+            source: 'https://muskogee.pages.wm.edu/wp-content/blogs.dir/3050/files/sites/148/2016/12/mus06051.pdf',
+        },
+    ];
+
     // get the NODE_ENV variable
     private readonly nodeEnv = process.env['NODE_ENV'];
     private apiUrl: string;
@@ -94,5 +125,15 @@ export class DataService {
         formData.append('audio_file', audio, filename);
 
         return this.http.post<AsrResponse>(`${this.apiUrl}/asr/`, formData);
+    }
+
+    // Read-alongs (frontend only) -------------------------------------------------
+    getReadAlongs(): Observable<ReadAlongItem[]> {
+        return of(this.readAlongItems.slice());
+    }
+
+    getReadAlong(id: string): Observable<ReadAlongItem | undefined> {
+        const found = this.readAlongItems.find((it) => it.id === id);
+        return of(found);
     }
 }
