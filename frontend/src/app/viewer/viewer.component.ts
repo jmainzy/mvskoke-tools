@@ -19,6 +19,7 @@ export class ViewerComponent implements OnInit, AfterViewInit {
     filename = '';
     title = '';
     content = '';
+    previousQuery = '';
     fileLines: { text: string; tag: string; highlight: boolean; lineIndex: number }[] = [];
     highlightLines: number[] = [];
     isLoading = false;
@@ -27,6 +28,7 @@ export class ViewerComponent implements OnInit, AfterViewInit {
     ngOnInit(): void {
         this.route.queryParamMap.subscribe(params => {
             this.highlightLines = this.parseHighlightParams(params.get('hl'));
+            this.previousQuery = params.get('query')?.trim() ?? '';
             if (this.content) {
                 this.fileLines = this.parseFileLines(this.content);
                 this.scrollToFirstHighlight();

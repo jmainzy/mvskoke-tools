@@ -11,13 +11,14 @@ memory_cache = "./data/memory_index.cache"
 logger = logging.getLogger()
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
+memory = Memory(chunking_strategy={'mode':'paragraph'}, memory_file=memory_cache)
+
 def load_corpus(rebuild:bool=False) -> Memory:
     logger.info(f"Loading corpus from {data_dir}")
 
     if rebuild and os.path.exists(memory_cache):
         os.remove(memory_cache)
 
-    memory = Memory(chunking_strategy={'mode':'paragraph'}, memory_file=memory_cache)
 
     # load from cache if exists
     if os.path.exists(memory_cache) and not memory.is_empty():
@@ -67,7 +68,6 @@ def search(query: str) -> list[SearchResult]:
             distance=result['distance']
         ))
 
-    del memory  # free up memory
     return search_results
 
 if __name__ == "__main__":
