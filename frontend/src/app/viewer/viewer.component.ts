@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DataService } from '../services/data.service';
 
@@ -13,6 +13,7 @@ import { DataService } from '../services/data.service';
 export class ViewerComponent implements OnInit, AfterViewInit {
     private readonly route = inject(ActivatedRoute);
     private readonly dataService = inject(DataService);
+    private readonly cdr = inject(ChangeDetectorRef);
 
     @ViewChild('fileContentContainer') fileContentContainer?: ElementRef<HTMLDivElement>;
 
@@ -57,12 +58,14 @@ export class ViewerComponent implements OnInit, AfterViewInit {
                 this.content = res.content;
                 this.fileLines = this.parseFileLines(this.content);
                 this.isLoading = false;
+                this.cdr.detectChanges();
                 setTimeout(() => this.scrollToFirstHighlight(), 100);
             },
             error: (err) => {
                 console.error('Failed to load file:', err);
                 this.error = 'Failed to load file content.';
                 this.isLoading = false;
+                this.cdr.detectChanges();
             }
         });
     }

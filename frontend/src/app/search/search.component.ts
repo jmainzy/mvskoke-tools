@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DataService, SearchResult } from '../services/data.service';
@@ -9,11 +9,12 @@ import { DataService, SearchResult } from '../services/data.service';
     standalone: true,
     imports: [CommonModule, RouterLink, FormsModule],
     templateUrl: './search.component.html',
-    styleUrl: './search.component.scss'
+    styleUrls: ['./search.component.scss']
 })
 export class SearchResultsComponent implements OnInit {
     private readonly route = inject(ActivatedRoute);
     private readonly dataService = inject(DataService);
+    private readonly cdr = inject(ChangeDetectorRef);
 
     searchTerm = '';
     results: SearchResult[] = [];
@@ -47,15 +48,17 @@ export class SearchResultsComponent implements OnInit {
             next: (response) => {
                 this.results = response.results;
                 this.groupedResults = this.groupByFilename(this.results);
-                console.log(`Search results for "${query}":`, this.results);
-                console.log('response: ', response);
                 this.isLoading = false;
+                this.cdr.detectChanges();
+                console.log(`Search results for "${query}":`, this.results);
+                console.log('response: received with ', this.results);
             },
             error: (err) => {
                 console.error('Search error:', err);
                 this.error = 'Failed to fetch search results. Please try again.';
                 this.results = [];
                 this.isLoading = false;
+                this.cdr.detectChanges();
             }
         });
     }
