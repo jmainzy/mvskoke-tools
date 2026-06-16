@@ -5,5 +5,5 @@ sentence-transformers==5.5.1
 datasets==5.0.0
 librosa==0.11.0
 auditok==0.4.2
-faiss-cpu==1.14.2
+faiss-cpu==1.14.3
 ffmpeg-python==0.2.0
